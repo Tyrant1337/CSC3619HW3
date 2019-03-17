@@ -155,10 +155,6 @@
   </component>
   <component name="RunManager">
     <configuration name="server.js" type="NodeJSConfigurationType" node-parameters="-r dotenv/config" path-to-js-file="server.js" working-dir="$PROJECT_DIR$">
-      <envs>
-        <env name="SECRET_KEY" value="12345" />
-        <env name="DB" value="mongodb+srv://Murat:12345@csci3916hmwk3-26lvd.mongodb.net/test?retryWrites=true" />
-      </envs>
       <method v="2" />
     </configuration>
   </component>
