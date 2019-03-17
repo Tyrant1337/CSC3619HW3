@@ -61,12 +61,12 @@ router.post('/signup', function(req, res) {
             if (err) {
                 // duplicate entry
                 if (err.code == 11000)
-                    return res.json({ success: false, message: 'A user with that username already exists. '});
+                    return res.json({ success: false, message: 'A user with that username already exists please try again. '});
                 else
                     return res.send(err);
             }
 
-            res.json({ success: true, message: 'User created!' });
+            res.json({ success: true, message: 'User has been created!' });
         });
     }
 });
