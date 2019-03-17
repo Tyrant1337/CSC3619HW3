@@ -4,9 +4,10 @@ var Schema = mongoose.Schema;
 mongoose.connect(process.env.DB, { useNewUrlParser: true } );
 mongoose.set('useCreateIndex', true);
 
-mongoose.connection.once('Available', function () {
-    console.log('Connection to server Succesfull');
+mongoose.connection.once('open', function () {
+    console.log('Connection have been made');
 });
+// movie schema
 var MoviesSchema = new Schema({
     title: {
         type: String,
@@ -20,5 +21,5 @@ var MoviesSchema = new Schema({
     },
     Actors: []
 });
-
-module.exports = mongoose.model('Movies', MoviesSchema)
+// return the model
+module.exports = mongoose.model('Movies', MoviesSchema);
