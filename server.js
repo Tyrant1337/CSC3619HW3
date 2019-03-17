@@ -33,59 +33,39 @@ router.route('/users/:userId')
         User.findById(id, function(err, user) {
             if (err) res.send(err);
             var userJson = JSON.stringify(user);
-            // return that user
             res.json(user);
         });
     });
 
-router.route('/users')
-    .get(authJwtController.isAuthenticated, function (req, res) {
-        User.find(function (err, users) {
-            if (err) res.send(err);
-            // return the users
-            res.json(users);
-        });
-    });
 
 router.post('/signup', function(req, res) {
     if (!req.body.username || !req.body.password) {
-        res.json({success: false, msg: 'Please pass username and password.'});
+        res.json({success: false, msg: 'Please enter username and password.'});
     }
     else {
         var user = new User();
         user.name = req.body.name;
         user.username = req.body.username;
         user.password = req.body.password;
-        // save the user
         user.save(function(err) {
             if (err) {
                 // duplicate entry
                 if (err.code == 11000)
-                    return res.json({ success: false, message: 'A user with that username already exists. '});
+                    return res.json({ success: false, message: 'A account with that user name already exists please try a new one. '});
                 else
                     return res.send(err);
             }
 
-            res.json({ success: true, message: 'User created!' });
+            res.json({ success: true, message: 'User has been created succesfully' });
         });
     }
 });
-router.route('/Movies')
-    .post(authJwtController.isAuthenticated, function (req, res) {
-        console.log(req.body);
-        var movies = new Movie();
-        movies.title = req.body.title;
-        movies.YearRelease = req.body.YearRelease;
-        movies.genre = req.body.genre;
-        movies.Actors = req.body.Actors;
-        movies.save(function (err) {
-            if (err) {
-                if (err.Code == 11000)
-                    return res.JSON({success: false, message: 'A movie with that name already exists. '});
-                else
-                    return res.send(err);
-            }
-            res.json({success: true, message: 'Movie saved!'})
+
+router.route('/users')
+    .get(authJwtController.isAuthenticated, function (req, res) {
+        User.find(function (err, users) {
+            if (err) res.send(err);
+            res.json(users);
         });
     });
 
@@ -114,7 +94,7 @@ router.route('/Movie/:id')
                 if (!mov) {
                     return res.status(404).end();
                 }
-                return res.status(200).json({msg: "Movie updated"})
+                return res.status(200).json({msg: "Movie has been updated in the Database"})
             })
             .catch(err => next(err))
     });
@@ -128,11 +108,30 @@ router.route('/Movies')
             }
             else if(movie == null)
             {
-                res.json({msg : "Movie not found"})
+                res.json({msg : "Movie was not found please try a new Movie"})
             }
             else
-                res.json({msg :"The movie was deleted"})
+                res.json({msg :"The movie was deleted from the Database"})
         })
+    });
+
+router.route('/Movies')
+    .post(authJwtController.isAuthenticated, function (req, res) {
+        console.log(req.body);
+        var movies = new Movie();
+        movies.title = req.body.title;
+        movies.YearRelease = req.body.YearRelease;
+        movies.genre = req.body.genre;
+        movies.Actors = req.body.Actors;
+        movies.save(function (err) {
+            if (err) {
+                if (err.Code == 11000)
+                    return res.JSON({success: false, message: 'A movie with that name already exists please try a new name. '});
+                else
+                    return res.send(err);
+            }
+            res.json({success: true, message: 'Movie has been saved.'})
+        });
     });
 
 router.post('/signin', function(req, res) {
@@ -150,7 +149,7 @@ router.post('/signin', function(req, res) {
                 var token = jwt.sign(userToken, process.env.SECRET_KEY);
                 res.json({success: true, token: 'JWT ' + token});
             } else {
-                res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
+                res.status(401).send({success: false, msg: 'Authentication failed, Wrong password or username please try again.'});
             }
         });
     });

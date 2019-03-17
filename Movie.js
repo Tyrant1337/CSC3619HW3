@@ -7,7 +7,7 @@ mongoose.set('useCreateIndex', true);
 mongoose.connection.once('open', function () {
     console.log('Connection have been made');
 });
-// movie schema
+
 var MoviesSchema = new Schema({
     title: {
         type: String,
