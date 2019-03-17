@@ -1,3 +1,4 @@
+var Movies = require('./Movies');
 var express = require('express');
 var bodyParser = require('body-parser');
 var passport = require('passport');
@@ -37,6 +38,27 @@ router.route('/users/:userId')
             res.json(user);
         });
     });
+
+router.route('/Movies')
+    .post(authJwtController.isAuthenticated, function (req, res) {
+        console.log(req.body);
+        var movies = new Movie();
+        movies.title = req.body.title;
+        movies.YearRelease = req.body.YearRelease;
+        movies.genre = req.body.genre;
+        movies.Actors = req.body.Actors;
+        movies.save(function (err) {
+            if (err) {
+                if (err.Code == 11000)
+                    return res.JSON({success: false, message: 'A movie with that name already exists. '});
+                else
+                    return res.send(err);
+            }
+            res.json({success: true, message: 'Movie saved!'})
+        });
+    });
+
+
 
 router.route('/users')
     .get(authJwtController.isAuthenticated, function (req, res) {
