@@ -21,5 +21,5 @@ var MoviesSchema = new Schema({
     },
     Actors: []
 });
-// return the model
+
 module.exports = mongoose.model('Movies', MoviesSchema);
