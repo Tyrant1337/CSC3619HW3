@@ -79,6 +79,16 @@ router.route('/Movie/:moviesid')
         })
     });
 
+router.route('/Movie/:movietitle')
+    .get(authJwtController.isAuthenticated, function (req, res) {
+        var title = req.params.movietitle;
+        Movie.findBytitle(title, function (err, movie) {
+            if (err) res.send(err);
+            var movieJson = JSON.stringify(movie);
+            res.json(movieJson);
+        })
+    });
+
 router.route('/Movie')
     .get(authJwtController.isAuthenticated, function (req, res) {
         Movie.find(function (err, movies) {
