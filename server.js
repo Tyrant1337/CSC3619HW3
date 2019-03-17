@@ -4,7 +4,7 @@ var passport = require('passport');
 var authJwtController = require('./auth_jwt');
 var User = require('./Users');
 var jwt = require('jsonwebtoken');
-var Movie = require('./Movies');
+var Movie = require('./Movie');
 
 var app = express();
 module.exports = app; // for testing
@@ -89,7 +89,7 @@ router.route('/Movies')
         });
     });
 
-router.route('/Movies/:moviesid')
+router.route('/Movie/:moviesid')
     .get(authJwtController.isAuthenticated, function (req, res) {
         var id = req.params.moviesid;
         Movie.findById(id, function (err, movie) {
@@ -99,14 +99,14 @@ router.route('/Movies/:moviesid')
         })
     });
 
-router.route('/Movies')
+router.route('/Movie')
     .get(authJwtController.isAuthenticated, function (req, res) {
         Movie.find(function (err, movies) {
             if(err) res.send(err);
             res.json(movies);
         })
     });
-router.route('/Movies/:id')
+router.route('/Movie/:id')
     .put(authJwtController.isAuthenticated, function (req, res) {
         var conditions = {_id: req.params.id};
         Movie.updateOne(conditions, req.body)
